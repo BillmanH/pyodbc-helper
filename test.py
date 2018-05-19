@@ -1,5 +1,6 @@
 import os
 import sys
+import yaml
 
-os.getlogin()
+UNAME = os.getlogin()
 
