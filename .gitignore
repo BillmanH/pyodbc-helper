@@ -106,3 +106,4 @@ venv.bak/
 
 #keyfiles and other strings
 config_file.json
+/SO_unanswered.txt

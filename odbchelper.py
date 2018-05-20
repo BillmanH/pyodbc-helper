@@ -1,6 +1,13 @@
 import pyodbc
 
-Driver = "{SQL Server}"
+class DB_PARAMS(object):
+
+    def __init__(self, *args, **kwargs):
+
+        self.Driver = "{SQL Server}"
+        self.Encoding = "SQL_Latin1_General_CP1_CI_AS"
+        return super().__init__(*args, **kwargs)
+
 
 def connect_from_dict(filepath):
     """
@@ -12,7 +19,7 @@ def connect_from_dict(filepath):
 
     #things that you need
     Name = keys['name']
-    Cataloge = keys['Database']
+    Database = keys['Database']
     Uid = keys['Uid']
     Pwd = keys['Pwd']
     #things that have defaults
@@ -25,7 +32,7 @@ def connect_from_dict(filepath):
     Trust = keys.get('TrustServerCertificate',"no")
     cxn_string = f'DRIVER={Driver};' \
                 + f'SERVER={Server}:{Name},{Port};' \
-                + f'Initial Catalog={Cataloge};' \
+                + f'Database={Database};' \
                 + f'Persist Security Info={persistSecure};' \
                 + f'UID={Uid};PWD={Pwd};'\
                 + f'MultipleActiveResultSets={MultipleActiveResultSets};' \
@@ -34,5 +41,17 @@ def connect_from_dict(filepath):
                 + f'Connection Timeout={Timeout};' \
 
     cnxn = pyodbc.connect(cxn_string,Trusted_connection="no")
+    cnxn.setencoding('utf-8')
     return cnxn
 
+def get_table(cnxn,tableName,verbose=False):
+    """
+    get a full table (select *) and return it as a dataframe.
+    """
+    cursor = cnxn.cursor()
+
+    cursor.execute("select user_id, user_name from users")
+    rows = cursor.fetchall()
+    for row in rows:
+        print(row.user_id, row.user_name)
+    
