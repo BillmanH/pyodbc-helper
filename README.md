@@ -21,5 +21,12 @@ some assistance for pyodbc to make working with SQL server much less painful.
 * If you are using an Azure SQL Server instance you will need to encrypt and distrust the serverCert. 
 * I'm only building this for the tcp connection with ODBC. If you are using annother connection you will need to manage that yourself. 
 
-#TODO:
-1) Everything
+# getting a table 
+**get_table**
+`df = get_table(cnxn,tableName,nrows=None,verbose=True)`
+sometimes you just want to fetch a table from SQL server in the form of a dataframe. Pandas already has a great function fro this. I've just
+embelished it a little to add a variable to specify the number of rows. 
+
+# TODO
+1) Speficy randomization in `get_table`
+2) Build `update_table` function
