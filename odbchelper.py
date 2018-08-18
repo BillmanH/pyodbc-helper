@@ -1,5 +1,10 @@
+#%%
+import os
 import pyodbc
+import yaml
+import pandas as pd
 
+#%%
 class DB_PARAMS(object):
 
     def __init__(self, *args, **kwargs):
@@ -23,8 +28,9 @@ def connect_from_dict(filepath):
     Uid = keys['Uid']
     Pwd = keys['Pwd']
     #things that have defaults
+    Driver = keys.get('driver','{ODBC Driver 13 for SQL Server}')
     Server = keys.get('Server','tcp')
-    port = keys.get('port',1433)
+    Port = keys.get('port',1433)
     MultipleActiveResultSets = keys.get('MultipleActiveResultSets',False)
     persistSecure = keys.get('MultipleActiveResultSets',False)
     Timeout = keys.get('Timeout',30)
@@ -44,14 +50,26 @@ def connect_from_dict(filepath):
     cnxn.setencoding('utf-8')
     return cnxn
 
-def get_table(cnxn,tableName,verbose=False):
+#%%
+def get_table(cnxn,tableName,nrows=10,verbose=False):
     """
     get a full table (select *) and return it as a dataframe.
+    
+    df = get_table(cnxn,tableName,nrows=None,verbose=True)
+    cnxn = connection object (TODO: replace with self)
+    tableName (STR) = string table to retrieve from DB
+    nrows (INT default:None) number of rows to return (used like 'select top n from table'
     """
     cursor = cnxn.cursor()
+    topString = ""
+    if nrows != None:
+        topString = f"top {nrows}"
+    sqlString = f"select {topString} * from {tableName}"
+    if verbose:
+        print(sqlString)
+    DF = pd.read_sql_query(sqlString, cnxn)
+    return DF
 
-    cursor.execute("select user_id, user_name from users")
-    rows = cursor.fetchall()
-    for row in rows:
-        print(row.user_id, row.user_name)
+
+
     
