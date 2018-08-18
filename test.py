@@ -23,5 +23,5 @@ cursor.execute(test_string)
 
 cursor.execute(f"select * from {mytable}")
 rows = cursor.fetchall()
-for row in rows:
-    print(row.user_id, row.user_name)
+
+len(rows)
