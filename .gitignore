@@ -111,3 +111,4 @@ config_file.json
 /.vs/pyodbc-helper/v15
 /.vs/*
 /.vs/
+.vs/
