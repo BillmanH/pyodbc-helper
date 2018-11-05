@@ -109,3 +109,5 @@ config_file.json
 /SO_unanswered.txt
 /.vs/VSWorkspaceState.json
 /.vs/pyodbc-helper/v15
+/.vs/*
+/.vs/
