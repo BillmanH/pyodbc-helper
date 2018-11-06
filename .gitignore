@@ -107,8 +107,8 @@ venv.bak/
 #keyfiles and other strings
 config_file.json
 /SO_unanswered.txt
-/.vs/VSWorkspaceState.json
-/.vs/pyodbc-helper/v15
-/.vs/*
-/.vs/
-.vs/
+
+#Visual Studio junk
+#/.vs/*
+#/.vs/
+#.vs/
