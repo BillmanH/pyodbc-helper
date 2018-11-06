@@ -109,6 +109,6 @@ config_file.json
 /SO_unanswered.txt
 
 #Visual Studio junk
-#/.vs/*
-#/.vs/
-#.vs/
+/.vs/*
+/.vs/
+.vs/
