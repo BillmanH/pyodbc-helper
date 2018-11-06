@@ -72,4 +72,3 @@ def get_table(cnxn,tableName,nrows=10,verbose=False):
 
 
 
-    
