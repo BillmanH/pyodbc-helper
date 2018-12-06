@@ -2,7 +2,7 @@
 some assistance for pyodbc to make working with SQL server much less painful.
 
 # You will need a config_file that has the connection string values from azure.portal.net
-
+### Example:
 `{` <br>
 `  "name": "myDatabase.database.windows.net",`<br>
 `  "Uid": "me@myDatabase",`<br>
@@ -13,6 +13,13 @@ some assistance for pyodbc to make working with SQL server much less painful.
 `  "TrustServerCertificate": "no",`<br>
 `  "Timeout":30`<br>
 `}`<br>
+
+## while there is some room for ambiguity, you should stick to these naming conventions
+It may be that you have a keyfile that is using annother connection parameter (e.g. node.js uses `host` instead of `name`)
+`name = ["name","Name","Server","server","host","Host"]`
+`Database = ["Database","database","DB","db","Db"]`
+`Uid = ["Uid","uid","Login","login","username",'UserName','User']`
+`Pwd = ["pwd","Pwd","Password","password"]`
 
 ## Requirements
 * pyodbc, obviously
