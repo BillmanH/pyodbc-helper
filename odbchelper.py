@@ -39,7 +39,7 @@ def connect_from_dict(filepath):
     possibleUID = [k for k in KFK if k in 
                      ["Uid","uid","Login","login","username",'UserName','User']
                      ]
-    UID = keys[[k for k in KFK if k in possibleUID][0]]   
+    Uid = keys[[k for k in KFK if k in possibleUID][0]]   
 
     possiblePWD = [k for k in KFK if k in 
                     ["pwd","Pwd","Password","password"]
