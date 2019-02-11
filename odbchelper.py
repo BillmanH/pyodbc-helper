@@ -96,4 +96,53 @@ def get_table(cnxn,tableName,nrows=10,verbose=False):
     return DF
 
 
+def upload_df(df,conn,table,matchID='id',type='update',verbose=True):
+    """
+    send a dataframe to SQL server database
 
+    if 'id' exists, it will update that record. If 'id' does not exist, add a new row.
+    df = typical pandas.DataFrame
+    conn = the db connection object
+    table = the name of the table in your database (without the dbo.)
+    [matchID] = When updating rows, the unique id of the records to update
+    [type] = 'update' default #only type I have right now
+            'append'
+            'replace'
+    """
+    cursor = conn.cursor()
+
+    df = df.where(pd.notnull(df), None)
+
+    colvalues = ",".join([f"[{col}]" for col in df.columns.tolist()])
+    questionMarks = ",".join(["?" for col in df.columns.tolist()])
+
+    UpdateSet = ",".join([f"[{col}] = ?" for col in df.columns.tolist()])
+    
+    sql_command =   (
+        f"MERGE dbo.{table} as [Target] "
+
+        f"USING (VALUES ({questionMarks})) as [Source] "
+        f" ({colvalues}) "
+        f"on ([Target].[{matchID}] = [Source].[{matchID}]) "
+
+        f"WHEN MATCHED THEN "
+        f" UPDATE SET "
+		f" {UpdateSet} "
+
+        f"WHEN NOT MATCHED THEN "
+        f" INSERT ({colvalues}) "
+        f" VALUES ({questionMarks}); "
+        )
+
+    if type=='update':
+        for i in df.index:
+            iValues = df.values[i].tolist()
+            cursor.execute(sql_command,*iValues+iValues+iValues)
+    if type=='replace':
+        pass
+    if type=='append':
+        pass
+
+    conn.commit()
+
+    return sql_command

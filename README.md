@@ -15,7 +15,7 @@ some assistance for pyodbc to make working with SQL server much less painful.
 `}`<br>
 
 ## while there is some room for ambiguity, you should stick to these naming conventions
-It may be that you have a keyfile that is using annother connection parameter (e.g. node.js uses `host` instead of `name`)
+It may be that you have a keyfile that is using annother connection parameter (e.g. node.js sql module uses `host` instead of `name`)
 <br>`name = ["name","Name","Server","server","host","Host"]`
 <br>`Database = ["Database","database","DB","db","Db"]`
 <br>`Uid = ["Uid","uid","Login","login","username",'UserName','User']`

@@ -1,9 +1,11 @@
 #%%
+
 import os
 import sys
 import yaml
 import pyodbc
 import pandas as pd
+import numpy as np
 
 
 UNAME = os.getlogin()
@@ -14,7 +16,10 @@ sys.path.append(
         )
 
 import odbchelper as sql
+
+
 #%%
+
 
 cnxn = sql.connect_from_dict(os.path.join(myPath,"config_file.json"))
 cursor = cnxn.cursor()
@@ -35,4 +40,19 @@ for row in rows:
 
 
 #%%
+#Pulling data directly from SQL via Pandas.
 DF = pd.read_sql_query("select top 10 * from [dbo].[Transaction2]", cnxn)
+
+
+#%%
+#Upload Testing
+###  I'm adding a df that has some GUIDS and Dates to test some uploading features. 
+df = pd.DataFrame(np.random.randn(50, 4), columns=list('ABCD'))
+df['Date Modified'] = '2-22-2019'
+df['index'] = df.index.tolist()
+
+
+#%%
+upload_df(df,cnxn,matchID='index',table="DB_helper",type='append')
+
+
