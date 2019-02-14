@@ -48,11 +48,11 @@ DF = pd.read_sql_query("select top 10 * from [dbo].[Transaction2]", cnxn)
 #Upload Testing
 ###  I'm adding a df that has some GUIDS and Dates to test some uploading features. 
 df = pd.DataFrame(np.random.randn(50, 4), columns=list('ABCD'))
-df['Date Modified'] = '2-22-2019'
+df['Date Modified'] = '2-24-2019'
 df['index'] = df.index.tolist()
 
 
 #%%
-upload_df(df,cnxn,matchID='index',table="DB_helper",type='append')
+replace_df(df,cnxn,table="DB_helper")
 
 

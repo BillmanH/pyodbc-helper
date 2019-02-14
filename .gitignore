@@ -114,3 +114,4 @@ config_file.json
 .vs/
 .vscode/
 *slnx.sqlite*
+.vs/slnx.sqlite

@@ -96,18 +96,15 @@ def get_table(cnxn,tableName,nrows=10,verbose=False):
     return DF
 
 
-def upload_df(df,conn,table,matchID='id',type='update',verbose=True):
+def update_df(df,conn,table,matchID='id'):
     """
-    send a dataframe to SQL server database
-
+    update records in a sql table using a primary key. 
     if 'id' exists, it will update that record. If 'id' does not exist, add a new row.
+
     df = typical pandas.DataFrame
     conn = the db connection object
     table = the name of the table in your database (without the dbo.)
     [matchID] = When updating rows, the unique id of the records to update
-    [type] = 'update' default #only type I have right now
-            'append'
-            'replace'
     """
     cursor = conn.cursor()
 
@@ -134,15 +131,46 @@ def upload_df(df,conn,table,matchID='id',type='update',verbose=True):
         f" VALUES ({questionMarks}); "
         )
 
-    if type=='update':
-        for i in df.index:
-            iValues = df.values[i].tolist()
-            cursor.execute(sql_command,*iValues+iValues+iValues)
-    if type=='replace':
-        pass
-    if type=='append':
-        pass
+
+    for i in df.index:
+        iValues = df.values[i].tolist()
+        cursor.execute(sql_command,*iValues+iValues+iValues)
+
 
     conn.commit()
+    return 
 
-    return sql_command
+def replace_df(df,conn,table,confirm='yes'):
+    """
+    drop the whole table and replace it with the table that you have. 
+
+
+    df = typical pandas.DataFrame
+    conn = the db connection object
+    table = the name of the table in your database (without the dbo.)
+    """
+    cursor = conn.cursor()
+
+    df = df.where(pd.notnull(df), None)
+
+    colvalues = ",".join([f"[{col}]" for col in df.columns.tolist()])
+    questionMarks = ",".join(["?" for col in df.columns.tolist()])
+
+    UpdateSet = ",".join([f"[{col}] = ?" for col in df.columns.tolist()])
+    
+    #step one: Drop
+    sql_command =   (
+        f"TRUNCATE dbo.{table} "
+        )
+    conn.commit()
+
+    #step two: Insert
+    sql_command =   (
+        f"INSERT INTO  dbo.{table} ({colvalues})"
+        f"VALUES {questionMarks}"
+        )
+    conn.commit()
+
+    cursor.execute(sql_command,df.values)
+
+    return 
