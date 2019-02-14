@@ -34,6 +34,19 @@ It may be that you have a keyfile that is using annother connection parameter (e
 sometimes you just want to fetch a table from SQL server in the form of a dataframe. Pandas already has a great function fro this. I've just
 embelished it a little to add a variable to specify the number of rows. 
 
+# updating a table 
+**upload_df**
+`upload_df(df,conn,table,matchID='id',type='update')`
+send a dataframe to SQL server database
+
+if 'id' exists, it will update that record. If 'id' does not exist, add a new row.
+df = typical pandas.DataFrame
+conn = the db connection object
+table = the name of the table in your database (without the dbo.)
+[matchID] = When updating rows, the unique id of the records to update
+[type] = 'update' default #only type I have right now
+        'append'
+        'replace'
 # TODO
 1) Speficy randomization in `get_table`
-2) Build `update_table` function
+
